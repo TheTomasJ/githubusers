@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { auth } from 'firebase/app'; import 'firebase/auth';
 
 const TOKEN_KEY = 'githubToken';
@@ -14,7 +13,7 @@ export class SessionService {
 
   public token: string;
 
-  constructor(public afAuth: AngularFireAuth, session: SessionService, router: Router, http: HttpClient) {
+  constructor(public afAuth: AngularFireAuth, router: Router) {
     this.token = localStorage.getItem(TOKEN_KEY);
 
     if(!this.token) {
@@ -32,11 +31,9 @@ export class SessionService {
     }
   }
 
-  public triggerLogin() {
-    if(!this.token) {
-      localStorage.setItem(STATE_KEY, window.location.href);
-      this.afAuth.signInWithRedirect(new auth.GithubAuthProvider());
-    }
+  public triggerLogin(next: string) {
+    localStorage.setItem(STATE_KEY, next);
+    this.afAuth.signInWithRedirect(new auth.GithubAuthProvider());
   }
 
   public logout() {
