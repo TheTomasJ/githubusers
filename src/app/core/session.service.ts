@@ -11,7 +11,7 @@ const STATE_KEY = 'stateKey';
 })
 export class SessionService {
 
-  public loggedInUser: {token: string, email: string};
+  public loggedInUser: {token: string, username: string};
   public initialized: boolean;
 
   constructor(public afAuth: AngularFireAuth, private router: Router) {
@@ -26,7 +26,7 @@ export class SessionService {
         if(val.credential) {
           this.loggedInUser = {
             token: (val.credential as unknown as {accessToken: string}).accessToken,
-            email: val.user.email
+            username: val.additionalUserInfo.username
           };
           localStorage.setItem(SESSION_KEY, JSON.stringify(this.loggedInUser));
           

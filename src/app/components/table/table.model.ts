@@ -15,9 +15,14 @@ export class DataSource<T> {
     constructor(
         public cols: {id: string, sortKey?: string, type?: string}[],
         private provider: (sort: string, order: string, page: number) => Observable<GitHubResponse>,
-        private parser: (row: any) => T
+        private parser: (row: any) => T,
+        defaults?: {
+            sortKey?: string
+        }
     ) {
-
+        if(defaults) {
+            this.sortKey = defaults.sortKey;
+        }
     }
 
     nextPage(): void {
@@ -26,12 +31,14 @@ export class DataSource<T> {
             this.update();
         }
     }
+
     prevPage(): void {
         if(this.page > 1) {
             this.page--;
             this.update();
         }
     }
+
     sort(col: string): void {
         if(this.sortKey === col) {
             this.order = this.order === 'desc' ? 'asc' : 'desc';
@@ -53,6 +60,7 @@ export class DataSource<T> {
                 this.latest = data;
                 this.rows = data.items.map(this.parser);
                 this.pages = Math.ceil(this.latest?.total_count / 30);
+                this.isWorking = false;
             });
     }
 

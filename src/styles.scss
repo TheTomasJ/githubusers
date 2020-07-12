@@ -7,9 +7,28 @@ body {
 .btn {
     margin: 0 16px;
     padding: 0 8px;
-    background-color: #bbb;
+    background-color: #e6e6e6;
+    box-shadow: 0 0 2px #777;
     border-radius: 4px;
     box-sizing: border-box;
     cursor: pointer;
     line-height: 32px;
+
+    &:hover:not(.disabled) {
+        background-color: #efefef;
+    }
+
+    &.disabled {
+        opacity: 0.35;
+        cursor: auto;
+    }
+}
+
+.header {
+    font-size: 1.4em;
+    padding-top: 4px;
+}
+
+a {
+    text-decoration: none;
 }

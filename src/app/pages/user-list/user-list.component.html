@@ -1,7 +1,7 @@
 <app-table [dataSource]="dataSource">
     <div class="table-options">
         <div class="header">User list</div>
-        <input [formControl]="location">
+        <input [formControl]="location" placeholder="Location" (keydown.enter)="dataSource.refresh()">
         <div class="btn" (click)="dataSource.refresh()">Refresh</div>
     </div>
 </app-table>

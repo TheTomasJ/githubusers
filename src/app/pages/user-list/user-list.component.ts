@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { getURI, GitHubResponse } from '../../core/utils';
+import { getURI, GitHubResponse, extractCountToProp } from '../../core/utils';
 import { DataSource } from 'src/app/components/table/table.model';
 import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
@@ -35,8 +35,8 @@ export class UserListComponent implements OnInit, OnDestroy {
         type: 'dynamic'
       },
       {
-        id: 'Created at',
-        sortKey: 'created'
+        id: 'Joined at',
+        sortKey: 'joined'
       }
     ],
     (sort, order, page) => this.getList(this.location.value, sort, order, page),
@@ -45,43 +45,24 @@ export class UserListComponent implements OnInit, OnDestroy {
         Avatar: row.avatar_url,
         Name: {
           text: row.login,
-          link: ['/users/' + row.id]
+          link: ['/users/' + row.login]
         },
         Repos: {
           revealed: null,
-          reveal: () => {
-            this.http.get(row.repos_url, {
-              params: {
-                per_page: '1'
-              },
-              observe: 'response'
-            })
-              .subscribe(res => {
-                const link = res.headers.get('link');
-                result.Repos.revealed = parseInt(link.substring(link.lastIndexOf('page=')).split('=')[1])
-              });
-          }
+          reveal: () => extractCountToProp(this.http, row.repos_url, res => result.Repos.revealed = res)
         },
         Followers: {
           revealed: null,
-          reveal: () => {
-            this.http.get(row.followers_url, {
-              params: {
-                per_page: '1'
-              },
-              observe: 'response'
-            })
-              .subscribe(res => {
-                const link = res.headers.get('link');
-                result.Followers.revealed = parseInt(link.substring(link.lastIndexOf('page=')).split('=')[1])
-              });
-          }
+          reveal: () => extractCountToProp(this.http, row.followers_url, res => result.Followers.revealed = res)
         },
-        'Created at': '-'
+        'Joined at': '-'
       }
 
       return result;
-    })
+    }),
+    {
+      sortKey: 'repositories'
+    }
   );
 
   constructor(private http: HttpClient) {

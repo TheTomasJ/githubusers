@@ -1,0 +1,30 @@
+.base-info {
+    display: flex;
+    padding: 24px;
+    margin: 24px 0;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 8px #ddd;
+    border-radius: 16px;
+    img {
+        max-width: 120px;
+        max-height: 120px;
+        border-radius: 16px;
+        margin-right: 24px;
+    }
+    .info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        line-height: 24px;
+    }
+}
+
+.tables {
+    display: flex;
+    & > * {
+        padding: 0 24px;
+        width: 100%;
+        box-sizing: border-box;
+        flex: 1;
+    }
+}

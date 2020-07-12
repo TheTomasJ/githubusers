@@ -2,6 +2,7 @@
     <div class="others">
         <ng-content></ng-content>
     </div>
+    <div *ngIf="dataSource.isWorking" class="loading">Loading ..</div>
     <ng-container *ngTemplateOutlet="paginator"></ng-container>
 </div>
 <table>
@@ -32,6 +33,9 @@
                 <a *ngSwitchCase="'link'" [routerLink]="row[col.id].link">
                     {{ row[col.id].text }}
                 </a>
+                <a *ngSwitchCase="'href'" [href]="row[col.id].url" target="_blank">
+                    {{ row[col.id].text }}
+                </a>
                 <ng-container *ngSwitchDefault>
                     {{ row[col.id] }}
                 </ng-container>
@@ -45,8 +49,8 @@
 </div>
 <ng-template #paginator>
     <div class="paginator">
-        <div class="btn" (click)="dataSource.prevPage()">Prev</div>
+        <div class="btn" [ngClass]="{'disabled': dataSource.page === 1}" (click)="dataSource.prevPage()">Prev</div>
         Page: {{ dataSource.page + '/' + dataSource.pages }}
-        <div class="btn" (click)="dataSource.nextPage()">Next</div>
+        <div class="btn" [ngClass]="{'disabled': dataSource.pages <= dataSource.page}" (click)="dataSource.nextPage()">Next</div>
     </div>
 </ng-template>

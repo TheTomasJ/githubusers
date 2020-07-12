@@ -7,7 +7,7 @@
         </div>
         <div class="user">
             <ng-container *ngIf="session.loggedInUser; else anonymous">
-                {{ session.loggedInUser.email }}
+                <span class="profile" [routerLink]="['/users', session.loggedInUser.username]">{{ session.loggedInUser.username }}</span>
                 <span class="login" (click)="session.logout()">Logout</span>
             </ng-container>
             <ng-template #anonymous>

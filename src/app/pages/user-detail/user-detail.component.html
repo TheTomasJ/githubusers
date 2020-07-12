@@ -1,1 +1,19 @@
-<p>user-detail works!</p>
+<div class="header">User: {{ id }} <ng-container *ngIf="id === session.loggedInUser.username">(You)</ng-container></div>
+
+<ng-container *ngIf="user">
+    <div class="base-info">
+        <img [src]="user.avatar_url">
+        <div class="info">
+            <span>Total repos: <strong>{{ user.reposCount }}</strong></span>
+            <span>Total followers: <strong>{{ user.followersCount }}</strong></span>
+        </div>
+    </div>
+    <div class="tables">
+        <app-table *ngIf="reposDS" [dataSource]="reposDS">
+            <div class="header">Repositories</div>
+        </app-table>
+        <app-table *ngIf="followersDS" [dataSource]="followersDS">
+            <div class="header">Followers</div>
+        </app-table>
+    </div>
+</ng-container>
