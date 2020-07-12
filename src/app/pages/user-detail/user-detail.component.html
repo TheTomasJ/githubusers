@@ -1,4 +1,4 @@
-<div class="header">User: {{ id }} <ng-container *ngIf="id === session.loggedInUser.username">(You)</ng-container></div>
+<div class="header">User: {{ id }} <ng-container *ngIf="id === session.loggedInUser?.username">(You)</ng-container></div>
 
 <ng-container *ngIf="user">
     <div class="base-info">
