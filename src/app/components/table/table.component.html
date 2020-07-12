@@ -20,7 +20,7 @@
                 <img class="img-td" *ngSwitchCase="'img'" [src]="row[col.id]">
                 <ng-container *ngSwitchCase="'dynamic'">
                     <ng-container *ngIf="row[col.id]">
-                        <div *ngIf="row[col.id].revealed; else reveal">
+                        <div *ngIf="row[col.id].revealed !== null; else reveal">
                             {{ row[col.id].revealed }}
                         </div>
                         <ng-template #reveal>
