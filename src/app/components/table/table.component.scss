@@ -1,0 +1,57 @@
+.img-td {
+    max-width: 40px;
+    max-height: 40px;
+    border-radius: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+    th {
+        min-height: 32px;
+        background-color: #f3f4f5;
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+    tr {
+        &:hover {
+            background-color: #eee;
+        }
+    }
+
+    th.sortable {
+        cursor: pointer;
+        color: #44f
+    }
+}
+
+.paginator {
+    display: flex;
+    line-height: 32px;
+    margin-bottom: 16px;
+    margin-left: auto;
+}
+
+.reveal {
+    cursor: pointer;
+    max-width: 120px;
+    color: #bbb;
+    text-align: center;
+}
+
+.options {
+    &.top {
+        margin-bottom: 16px;
+        border-bottom: 1px solid #eee;
+    }
+    &.bottom {
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid #eee;
+    }
+    display: flex;
+}

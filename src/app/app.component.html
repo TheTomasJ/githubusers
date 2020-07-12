@@ -1,8 +1,8 @@
-<div *ngIf="session.initialized; else loading">
+<ng-container *ngIf="session.initialized; else loading">
     <div class="nav">
         <div class="brand">Githubusers demo</div>
         <div class="menu">
-            <span [routerLink]="['/user-list']">Users</span>
+            <span [routerLink]="['/users']">Users</span>
             <span *ngIf="session.loggedInUser" [routerLink]="['/my-issues']">My Issues</span>
         </div>
         <div class="user">
@@ -19,7 +19,7 @@
     <div class="content">
         <router-outlet></router-outlet>
     </div>
-</div>
+</ng-container>
 <ng-template #loading>
     <div class="loading">Waiting for GitHub ..</div>
 </ng-template>

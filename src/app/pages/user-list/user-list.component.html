@@ -1,1 +1,7 @@
-<p>user-list works!</p>
+<app-table [dataSource]="dataSource">
+    <div class="table-options">
+        <div class="header">User list</div>
+        <input [formControl]="location">
+        <div class="btn" (click)="dataSource.refresh()">Refresh</div>
+    </div>
+</app-table>

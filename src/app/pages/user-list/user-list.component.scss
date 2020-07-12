@@ -1,0 +1,19 @@
+input {
+    height: 32px;
+    border-radius: 4px;
+    outline: none;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #bbb;
+}
+
+.table-options {
+    .header {
+        font-size: 1.4em;
+        padding-top: 4px;
+    }
+    display: flex;
+    input {
+        margin-left: 16px;
+    }
+}

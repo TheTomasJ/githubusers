@@ -1,1 +1,52 @@
-<p>table works!</p>
+<div class="options top">
+    <div class="others">
+        <ng-content></ng-content>
+    </div>
+    <ng-container *ngTemplateOutlet="paginator"></ng-container>
+</div>
+<table>
+ <thead>
+     <tr>
+         <th *ngFor="let col of dataSource.cols" (click)="col.sortKey && dataSource.sort(col.sortKey)" [ngClass]="{'sortable': col.sortKey}">
+             {{ col.id }} <ng-container *ngIf="col.sortKey && col.sortKey === dataSource.sortKey">{{ dataSource.order === 'asc' ? '^' : 'v' }}</ng-container>
+         </th>
+     </tr>
+ </thead>
+ <tbody>
+     <tr *ngFor="let row of dataSource.rows">
+        <td *ngFor="let col of dataSource.cols">
+            <ng-container [ngSwitch]="col.type">
+                <img class="img-td" *ngSwitchCase="'img'" [src]="row[col.id]">
+                <ng-container *ngSwitchCase="'dynamic'">
+                    <ng-container *ngIf="row[col.id]">
+                        <div *ngIf="row[col.id].revealed; else reveal">
+                            {{ row[col.id].revealed }}
+                        </div>
+                        <ng-template #reveal>
+                            <div class="reveal" (click)="row[col.id].reveal()">
+                                (Click to reveal)
+                            </div>
+                        </ng-template>
+                    </ng-container>
+                </ng-container>
+                <a *ngSwitchCase="'link'" [routerLink]="row[col.id].link">
+                    {{ row[col.id].text }}
+                </a>
+                <ng-container *ngSwitchDefault>
+                    {{ row[col.id] }}
+                </ng-container>
+            </ng-container>
+        </td>
+     </tr>
+ </tbody>
+</table>
+<div class="options bottom">
+    <ng-container *ngTemplateOutlet="paginator"></ng-container>
+</div>
+<ng-template #paginator>
+    <div class="paginator">
+        <div class="btn" (click)="dataSource.prevPage()">Prev</div>
+        Page: {{ dataSource.page + '/' + dataSource.pages }}
+        <div class="btn" (click)="dataSource.nextPage()">Next</div>
+    </div>
+</ng-template>

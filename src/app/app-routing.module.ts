@@ -7,11 +7,11 @@ import { LoggedInGuard } from './core/logged-in.guard';
 
 const routes: Routes = [
   {
-    path: 'user-list',
+    path: 'users',
     component: UserListComponent
   },
   {
-    path: 'user-detail',
+    path: 'users/:id',
     component: UserDetailComponent
   },
   {
@@ -21,7 +21,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'user-list',
+    redirectTo: 'users',
   }
 ];
 

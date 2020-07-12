@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { DataSource } from './table.model';
 
 @Component({
   selector: 'app-table',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TableComponent implements OnInit {
 
+  @Input() dataSource: DataSource<unknown>;
+
   constructor() { }
 
   ngOnInit(): void {
+    this.dataSource.refresh();
   }
 
 }
