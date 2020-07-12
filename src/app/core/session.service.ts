@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { auth } from 'firebase/app'; import 'firebase/auth';
 
-const TOKEN_KEY = 'githubToken';
+const SESSION_KEY = 'sessionKey';
 const STATE_KEY = 'stateKey';
 
 @Injectable({
@@ -11,22 +11,32 @@ const STATE_KEY = 'stateKey';
 })
 export class SessionService {
 
-  public token: string;
+  public loggedInUser: {token: string, email: string};
+  public initialized: boolean;
 
-  constructor(public afAuth: AngularFireAuth, router: Router) {
-    this.token = localStorage.getItem(TOKEN_KEY);
+  constructor(public afAuth: AngularFireAuth, private router: Router) {
+    this.loggedInUser = JSON.parse(localStorage.getItem(SESSION_KEY));
 
-    if(!this.token) {
+    if(this.loggedInUser) {
+      this.initialized = true;
+    }
+    else {
       this.afAuth.getRedirectResult().then((val) => {
+        
         if(val.credential) {
-          this.token = (val.credential as unknown as {accessToken: string}).accessToken;
-          localStorage.setItem(TOKEN_KEY, this.token);
-
-          let state = localStorage.get(STATE_KEY);
+          this.loggedInUser = {
+            token: (val.credential as unknown as {accessToken: string}).accessToken,
+            email: val.user.email
+          };
+          localStorage.setItem(SESSION_KEY, JSON.stringify(this.loggedInUser));
+          
+          let state = localStorage.getItem(STATE_KEY);
           if(state) {
             router.navigateByUrl(state);
           }
         }
+  
+        this.initialized = true;
       });
     }
   }
@@ -37,7 +47,8 @@ export class SessionService {
   }
 
   public logout() {
-    localStorage.removeItem(TOKEN_KEY);
-    this.token = null;
+    localStorage.removeItem(SESSION_KEY);
+    this.loggedInUser = null;
+    this.router.navigateByUrl('/');
   }
 }

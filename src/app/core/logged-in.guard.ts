@@ -9,11 +9,11 @@ export class LoggedInGuard implements CanActivate {
   constructor(private session: SessionService) {}
 
   canActivate(next: ActivatedRouteSnapshot)  {
-    if(this.session.token) {
+    if(this.session.loggedInUser) {
       return true;
     }
 
-    this.session.triggerLogin(next.toString());
+    this.session.triggerLogin(next.url.join(''));
 
     return false;
   }

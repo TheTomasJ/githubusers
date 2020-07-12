@@ -12,6 +12,7 @@ import { UserDetailComponent } from './pages/user-detail/user-detail.component';
 import { MyIssuesComponent } from './pages/my-issues/my-issues.component';
 import { UserListComponent } from './pages/user-list/user-list.component';
 import { TableComponent } from './components/table/table.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [

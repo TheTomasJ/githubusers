@@ -1,0 +1,44 @@
+:host {
+    height: 100vh;
+    display: flex;
+    flex-flow: column;
+}
+
+.nav {
+    height: 50px;
+    background-color: #eee;
+    box-shadow: 0 0 8px #999;
+    display: flex;
+    padding: 16px 16px 0 16px;
+    box-sizing: border-box;
+
+    .brand {
+        font-weight: bold;
+    }
+
+    .menu {
+        flex: 1;
+        padding: 0 16px 0 24px;
+    }
+
+    .menu span, .login {
+        padding: 0 8px;
+        cursor: pointer;
+        &:hover {
+            opacity: 0.65;
+        }
+    }
+}
+
+.content {
+    flex: 1;
+    overflow: auto;
+    padding: 16px;
+}
+
+.loading {
+    height: 100%;
+    padding: 50% 0;
+    text-align: center;
+    color: #999;
+}
