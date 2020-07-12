@@ -2,16 +2,18 @@ import { GitHubResponse } from 'src/app/core/utils';
 import { Observable, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
-export class DataSource<T> {
-    rows: T[];
-    isWorking?: boolean;
-    page = 1;
-    pages = 1;
-    sortKey: string;
-    order: string = 'desc';
-    latest: GitHubResponse;
-    destroyed$: Subject<void> = new Subject();
+const DEFAULT_PAGE_SIZE = 30;
 
+export class DataSource<T> {
+    public rows: T[];
+    public page: number = 1;
+    public pages: number = 1;
+    public order: 'desc' | 'asc' = 'desc';
+    public sortKey: string;
+    public latest: GitHubResponse;
+    public isWorking: boolean;
+    public destroyed$: Subject<void> = new Subject();
+    
     constructor(
         public cols: {id: string, sortKey?: string, type?: string}[],
         private provider: (sort: string, order: string, page: number) => Observable<GitHubResponse>,
@@ -25,27 +27,36 @@ export class DataSource<T> {
         }
     }
 
-    nextPage(): void {
+    public nextPage(): void {
         if(this.pages > this.page) {
             this.page++;
             this.update();
         }
     }
 
-    prevPage(): void {
+    public prevPage(): void {
         if(this.page > 1) {
             this.page--;
             this.update();
         }
     }
 
-    sort(col: string): void {
+    public sort(col: string): void {
         if(this.sortKey === col) {
             this.order = this.order === 'desc' ? 'asc' : 'desc';
         } else {
             this.sortKey = col;
             this.order = 'desc';
         }
+        this.update();
+    }
+
+    public destroy(): void {
+        this.destroyed$.next();
+    }
+
+    public refresh(): void {
+        this.page = 1;
         this.update();
     }
 
@@ -59,17 +70,8 @@ export class DataSource<T> {
             .subscribe(data => {
                 this.latest = data;
                 this.rows = data.items.map(this.parser);
-                this.pages = Math.ceil(this.latest?.total_count / 30);
+                this.pages = Math.ceil(this.latest?.total_count / DEFAULT_PAGE_SIZE);
                 this.isWorking = false;
             });
-    }
-
-    public destroy(): void {
-        this.destroyed$.next();
-    }
-
-    public refresh(): void {
-        this.page = 1;
-        this.update();
     }
 }

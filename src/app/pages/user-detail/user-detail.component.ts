@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { getURI, GitHubResponse, extractCountToProp } from 'src/app/core/utils';
@@ -13,28 +13,31 @@ import { SessionService } from 'src/app/core/session.service';
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss']
 })
-export class UserDetailComponent implements OnInit, OnDestroy {
+export class UserDetailComponent implements OnDestroy {
   public id: string;
   public user: User;
-  private destroyed: Subject<void> = new Subject();
   public reposDS: DataSource<unknown>;
   public followersDS: DataSource<unknown>;
+  private destroyed: Subject<void> = new Subject();
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, public session: SessionService) {
-    this.router.events.pipe(
-      filter((event: RouterEvent) => event instanceof NavigationEnd),
-      takeUntil(this.destroyed)
-    ).subscribe(() => {
-      this.id = this.route.snapshot.paramMap.get('id');
-      this.fetchData();
-      this.user = null;
-      this.reposDS = null;
-      this.followersDS = null;
-    });
-  }
-  
-  ngOnInit(): void {
-
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router,
+    public session: SessionService
+  ) {
+    this.router.events
+      .pipe(
+        filter((event: RouterEvent) => event instanceof NavigationEnd),
+        takeUntil(this.destroyed)
+      )
+      .subscribe(() => {
+        this.id = this.route.snapshot.paramMap.get('id');
+        this.fetchData();
+        this.user = null;
+        this.reposDS = null;
+        this.followersDS = null;
+      });
   }
 
   private fetchData(): void {
@@ -46,6 +49,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       .subscribe(response => {
         this.user = response.items[0] as User;
 
+        // prepare followers data
         extractCountToProp(this.http, this.user.followers_url, res => {
           this.user.followersCount = res;
           this.followersDS = new DataSource(
@@ -67,6 +71,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
           );
         });
 
+        // prepare repos data
         extractCountToProp(this.http, this.user.repos_url, res => {
           this.user.reposCount = res;
           this.reposDS = new DataSource(

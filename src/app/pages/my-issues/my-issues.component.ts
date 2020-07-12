@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { DataSource } from 'src/app/components/table/table.model';
 import { GitHubResponse, getURI } from 'src/app/core/utils';
 import { Observable } from 'rxjs';
@@ -10,7 +10,7 @@ import { SessionService } from 'src/app/core/session.service';
   templateUrl: './my-issues.component.html',
   styleUrls: ['./my-issues.component.scss']
 })
-export class MyIssuesComponent implements OnInit {
+export class MyIssuesComponent {
 
   public dataSource: DataSource<unknown> = new DataSource(
     [
@@ -31,9 +31,6 @@ export class MyIssuesComponent implements OnInit {
   );
 
   constructor(private http: HttpClient, private session: SessionService) {
-  }
-
-  ngOnInit(): void {
   }
 
   public getList(page: number): Observable<GitHubResponse> {

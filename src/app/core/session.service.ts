@@ -19,8 +19,7 @@ export class SessionService {
 
     if(this.loggedInUser) {
       this.initialized = true;
-    }
-    else {
+    } else {
       this.afAuth.getRedirectResult().then((val) => {
         
         if(val.credential) {

@@ -10,8 +10,6 @@ export class TableComponent implements OnInit {
 
   @Input() dataSource: DataSource<unknown>;
 
-  constructor() { }
-
   ngOnInit(): void {
     this.dataSource.refresh();
   }

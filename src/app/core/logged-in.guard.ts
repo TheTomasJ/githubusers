@@ -6,6 +6,7 @@ import { SessionService } from './session.service';
   providedIn: 'root'
 })
 export class LoggedInGuard implements CanActivate {
+
   constructor(private session: SessionService) {}
 
   canActivate(next: ActivatedRouteSnapshot)  {

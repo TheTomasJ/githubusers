@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { getURI, GitHubResponse, extractCountToProp } from '../../core/utils';
 import { DataSource } from 'src/app/components/table/table.model';
@@ -10,7 +10,7 @@ import { FormControl } from '@angular/forms';
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss']
 })
-export class UserListComponent implements OnInit, OnDestroy {
+export class UserListComponent implements OnDestroy {
 
   public location = new FormControl('Bratislava');
 
@@ -65,11 +65,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     }
   );
 
-  constructor(private http: HttpClient) {
-  }
-
-  ngOnInit(): void {
-  }
+  constructor(private http: HttpClient) {}
 
   public getList(location: string, sort: string, order: string, page: number): Observable<GitHubResponse> {
     return this.http.get<GitHubResponse>(getURI('/search/users'), {
